@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
 
-PROJECT(snapcontroller)
+PROJECT(spr_server)
 set(CMAKE_CXX_STANDARD 14) 
 find_package(PkgConfig REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -15,8 +15,6 @@ set(SERVER_INCLUDE
 
 INCLUDE_DIRECTORIES(${SERVER_INCLUDE})
 #pkg_check_modules(PROCESS_CPP process-cpp)
-pkg_check_modules(ADK_MESSAGE_SERVICE adk-message-service REQUIRED)
-pkg_check_modules(DBUSCPP dbus-cpp>=5.0 REQUIRED)
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRC_LIST})
 target_compile_options(${PROJECT_NAME} PUBLIC -O -g -std=c++11)
@@ -44,4 +42,4 @@ target_include_directories(
   ${DBUSCPP_INCLUDE_DIRS}
 )
 
-install (TARGETS snapcontroller  COMPONENT snap DESTINATION bin)
+install (TARGETS spr_server  COMPONENT snap DESTINATION bin)

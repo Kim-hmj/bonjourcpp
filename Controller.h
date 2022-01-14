@@ -7,33 +7,9 @@
 #include <memory>
 #include <unistd.h>
 #include <stdlib.h>
-
-#include <adk/message-service/adk-message-service.h>
-
-/*
-class FileOperation
-{
-private:
-    std::ofstream vappp;
-public:
-    enum Type {
-        VALUE = 0,
-        JSON,
-        TYPE_MAX
-    };
-
-    FileOperation();
-    ~FileOperation();
-
-    int read();
-    void write();
-};
-*/
-
-using adk::msg::AdkMessageService;
-using adk::msg::AdkMessage;
-namespace adk {
-namespace snap_controller {
+#include <thread>
+#include "server_settings.hpp"
+using namespace std;
 
 class Controller
 {
@@ -43,46 +19,11 @@ public:
 
     void Start();
     void Stop();
+    std::thread recv_Thread_;
+    ServerSettings::Tcp tcp_settings_;
+    ServerSettings::Http http_settings_;
 
-    //void worker();
-    AdkMessageService adk_message_service_;
-
-private:
-    enum streaming_type {
-        UNDEF = 0,
-        AIRPLAY,
-        SPOTIFY,
-        QPLAY,
-        TYPE_MAX
-    };
-/*
-    enum control_state {
-        UNDEF = 0,
-        MASTER,
-        SLAVE,
-        STATE_MAX
-    };
-*/
 };
 
-class ControllerMsgService
-{
-public:
-    ControllerMsgService();
-    ~ControllerMsgService();
-
-    bool Start();
-    bool Stop();
-
-private:
-    typedef void (adk::snap_controller::ControllerMsgService::*handler)(const AdkMessage &command);
-    std::shared_ptr<Controller> controller_;
-    std::map<AdkMessage::AdkMsgCase, handler> control_messages_;
-
-    void HandleSystemStateSwitch(const AdkMessage& command);
-};
-
-}
-}
 
 #endif
