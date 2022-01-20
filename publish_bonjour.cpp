@@ -23,6 +23,7 @@
 #include <iostream>
 #include <mutex>
 #include <fstream>
+#include <errno.h>
 using namespace std;
 
 typedef union
@@ -32,7 +33,7 @@ typedef union
 } Opaque16;
 
 
-PublishBonjour::PublishBonjour(const std::string& serviceName, boost::asio::io_context& ioc) : PublishmDNS(serviceName, ioc), active_(false)
+PublishBonjour::PublishBonjour(const std::string& serviceName/*, boost::asio::io_context& ioc*/) : PublishmDNS(serviceName/*, ioc*/), active_(false)
 {
     ///	dns-sd -R Snapcast _snapcast._tcp local 1704
     ///	dns-sd -R Snapcast _snapcast-jsonrpc._tcp local 1705
@@ -129,7 +130,7 @@ void PublishBonjour::worker()
         //			myTimerCallBack();
         else if (result < 0)
         {
-            cout << "select() returned " << result << " errno " << errno << " " << strerror(errno) << "\n";
+            cout << "select() returned " << result << " errno " << errno << " " /*<< strerror(errno) */<< "\n";
             if (errno != EINTR)
                 active_ = false;
         }
@@ -183,6 +184,7 @@ void PublishBonjour::publish(const std::vector<mDNSService>& services)
         // service.txt_.size(), service.txt_.empty()?NULL:service.txt_.c_str(), reg_reply, this);
         DNSServiceRegister(&client, flags, kDNSServiceInterfaceIndexAny, serviceName_.c_str(), service.name_.c_str(), NULL, NULL, registerPort.NotAnInteger, 0,
                            NULL, reg_reply, this);
+        cout << "do not block in publish" << endl;
         clients.push_back(client);
     }
 

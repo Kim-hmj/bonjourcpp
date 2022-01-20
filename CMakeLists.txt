@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
 PROJECT(spr_server)
 set(CMAKE_CXX_STANDARD 14) 
 find_package(PkgConfig REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread)
+find_package( REQUIRED COMPONENTS thread)#Boost
 set(SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/Controller.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/publish_bonjour.cpp
@@ -29,10 +29,10 @@ target_link_libraries(
     ${ADK_CONFIG_LIBRARIES}
     ${DBUSCPP_LIBRARIES}
     ${ADK_MESSAGE_SERVICE_LIBRARIES}
-    ${Boost_LIBRARIES}
+#    ${Boost_LIBRARIES}
 )
 
-include_directories(${Boost_INCLUDE_DIRS})
+#include_directories(${Boost_INCLUDE_DIRS})
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
